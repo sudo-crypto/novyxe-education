@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VOID — Viewer</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page viewer">
+  <div class="bg-move" id="bg"></div>
+
+  <main class="viewer-wrap">
+    <div class="frame">
+      <iframe id="player" src="about:blank" allowfullscreen sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe>
+
+      <!-- control overlay at bottom of frame -->
+      <div class="frame-controls">
+        <button id="backHome" class="ctrl">Home</button>
+        <button id="refreshBtn" class="ctrl">↻</button>
+        <button id="fullscreenBtn" class="ctrl">⛶</button>
+      </div>
+    </div>
+  </main>
+
+  <div id="navbar-container"></div>
+
+  <script src="js/script.js"></script>
+  <script>
+    loadNavbar();
+    // fade in
+    document.body.classList.remove('fade-out');
+    document.body.classList.add('fade-in');
+
+    // parse url param
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+    const url = getParam('url');
+    const player = document.getElementById('player');
+
+    if (url) {
+      const decoded = decodeURIComponent(url);
+      // set iframe src (may be blocked by some sites due to X-Frame headers)
+      player.src = decoded;
+    } else {
+      // no url — show a simple message inside
+      const doc = '<!doctype html><meta charset="utf-8"><body style="background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh">No URL provided</body>';
+      player.srcdoc = doc;
+    }
+
+    // controls
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      // reload iframe
+      try { player.contentWindow.location.reload(); }
+      catch (e) { player.src = player.src; } // fallback
+    });
+
+    document.getElementById('fullscreenBtn').addEventListener('click', async () => {
+      if (!document.fullscreenElement) {
+        try { await player.requestFullscreen(); }
+        catch (e) { try { player.webkitRequestFullscreen(); } catch {} }
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    document.getElementById('backHome').addEventListener('click', () => {
+      // fade back to games/home depending on referrer; we'll go to home.html
+      document.body.classList.add('fade-out');
+      setTimeout(() => { location.href = 'home.html'; }, 300);
+    });
+  </script>
+</body>
+</html>

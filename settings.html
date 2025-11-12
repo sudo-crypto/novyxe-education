@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/script.js" defer></script>
+</head>
+<body class="page">
+  <div class="center-content">
+    <h1 class="logo glow-text">Under Construction</h1>
+  </div>
+
+  <!-- Navbar container goes at end of body -->
+  <div id="navbar-container"></div>
+
+  <script>
+    // Ensure navbar loads after DOM and script
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof loadNavbar === "function") {
+        loadNavbar();
+      } else {
+        console.error("loadNavbar() not found. Check script.js path.");
+      }
+    });
+  </script>
+</body>
+</html>

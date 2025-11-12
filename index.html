@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOID</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page">
+
+  <!-- subtle animated background -->
+  <div class="bg-move" id="bg"></div>
+
+  <!-- center content -->
+  <div class="center-content">
+    <h1 class="logo drop">VOID</h1>
+    <button class="primary-btn drop delay" id="accessBtn">Access</button>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+  // Access button logic (Netlify-safe)
+  document.getElementById('accessBtn').addEventListener('click', () => {
+    // Open a new blank tab
+    const newTab = window.open('', '_blank');
+    if (!newTab) {
+      alert('Pop-up blocked! Please allow pop-ups for this site.');
+      return;
+    }
+
+    // Write a loading screen first
+    newTab.document.write(`
+      <html>
+        <head>
+          <title>VOID</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body {
+              margin:0;
+              background:#000;
+              color:white;
+              font-family:sans-serif;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              height:100vh;
+              letter-spacing:6px;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>LOADING...</h1>
+          <script>
+            // Wait briefly to ensure page writes fully before redirect
+            setTimeout(() => {
+              window.location.href = '${window.location.origin}/home.html';
+            }, 400);
+          <\/script>
+        </body>
+      </html>
+    `);
+    newTab.document.close();
+
+    // (Optional) redirect current tab elsewhere
+    location.replace('https://google.com');
+  });
+</script>
+
+</body>
+</html>

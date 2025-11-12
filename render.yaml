@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: void-site
+    env: static
+    buildCommand: ""
+    staticPublishPath: .

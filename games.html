@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VOID — Games</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page hub games-page">
+  <div class="bg-move" id="bg"></div>
+
+  <main class="hub-content">
+    <h2 class="hub-title">Games</h2>
+    <div class="search-wrap">
+      <input id="gameSearch" class="search" placeholder="Search for a Game" />
+    </div>
+
+    <div id="gameGrid" class="grid">
+      <!-- sample game items (update URLs as you want) -->
+      <button class="tile" data-url="https://167-86-103-140.sslip.io/books/crazycattle3d/CrazyCattle3D.html">CrazyCattle3D</button>
+      <button class="tile" data-url="https://167-86-103-140.sslip.io/books/crazychicken3d/index.html">CrazyChicken3D</button>
+      <button class="tile" data-url="https://167-86-103-140.sslip.io/books/cluster-rush/index.html">Cluster Rush</button>
+      <button class="tile" data-url="https://167-86-103-140.sslip.io/books/retro-bowl/index.html">Retro Bowl</button>
+      <button class="tile" data-url="https://css.v2202507285901360006.powersrv.de/zones/html/gladihoppers/">Gladdihoppers</button>
+      <button class="tile" data-url="https://css.v2202507285901360006.powersrv.de/zones/html/boxingrandom/">Boxing Random</button>
+      
+      <!-- add as many as you want -->
+    </div>
+  </main>
+
+  <div id="navbar-container"></div>
+
+  <script src="js/script.js"></script>
+  <script>
+    loadNavbar();
+
+    // fade in
+    document.body.classList.remove('fade-out');
+    document.body.classList.add('fade-in');
+
+    // search behavior
+    const search = document.getElementById('gameSearch');
+    const grid = document.getElementById('gameGrid');
+
+    // hide placeholder on focus (placeholder stays but clears on focus)
+    search.addEventListener('focus', () => { search.placeholder = ''; });
+    search.addEventListener('blur', () => { if (!search.value) search.placeholder = 'Search for a Game'; });
+
+    // filter tiles live
+    search.addEventListener('input', () => {
+      const q = search.value.trim().toLowerCase();
+      document.querySelectorAll('#gameGrid .tile').forEach(btn => {
+        const text = btn.textContent.toLowerCase();
+        btn.style.display = text.includes(q) ? 'inline-block' : 'none';
+      });
+    });
+
+    // click a tile => fade to viewer with url param
+    grid.addEventListener('click', (e) => {
+      const tile = e.target.closest('.tile');
+      if (!tile) return;
+      const url = tile.getAttribute('data-url');
+      // fade out then navigate
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        location.href = 'viewer.html?url=' + encodeURIComponent(url);
+      }, 350);
+    });
+  </script>
+</body>
+</html>
